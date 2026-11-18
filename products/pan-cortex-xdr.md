@@ -25,9 +25,9 @@ auto:
       fields:
         releaseCycle:
           column: "Version"
-          # CE versions are ignored (not supported by release_table)
-          regex: '^(?P<major>\d+)(\.(?P<minor>\d+))?(\.(?P<patch>\d+))?( \(Cortex XDR agent\))?$'
-          template: "{{major}}{% if minor %}.{{minor}}{% endif %}"
+          # CE versions get a "-ce" suffix; CE keeps the patch number (e.g. 7.9.103-ce) to avoid colliding with 7.9-ce
+          regex: '^(?P<major>\d+)(\.(?P<minor>\d+))?(\.(?P<patch>\d+))?(?P<ce> CE)?( \([Cc]ortex XDR [Aa]gent\))?$'
+          template: "{{major}}{% if minor %}.{{minor}}{% endif %}{% if ce %}{% if patch %}.{{patch}}{% endif %}-ce{% endif %}"
         releaseDate:
           column: "Release Date"
           regex: '^(?P<month>\w+) (?P<day>\d+)(st|nd|rd|th)?, (?P<year>\d{4}).*$'
